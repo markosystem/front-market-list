@@ -1,0 +1,25 @@
+<button mat-icon-button [matMenuTriggerFor]="menu">
+  <mat-icon>menu</mat-icon>
+</button>
+<mat-menu #menu="matMenu" [overlapTrigger]="false">
+  <button mat-menu-item routerLink="/">
+      <mat-icon>home</mat-icon>
+      <span>Início</span>
+  </button>
+  <button mat-menu-item routerLink="/marcas">
+      <mat-icon>bookmarks</mat-icon>
+      <span>Marcas</span>
+  </button>
+  <button mat-menu-item routerLink="/produtos">
+      <mat-icon>local_bar</mat-icon>
+      <span>Produtos</span>
+  </button>
+  <button mat-menu-item routerLink="/mercados">
+      <mat-icon>apartment</mat-icon>
+      <span>Mercados</span>
+  </button>
+  <button mat-menu-item routerLink="/compras">
+      <mat-icon>shopping_cart</mat-icon>
+      <span>Compras</span>
+  </button>
+</mat-menu>
