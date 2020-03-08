@@ -1,1 +1,29 @@
-<p>form marcs works!</p>
+<h2 class="div-center">
+    {{ id == null ? 'Cadastro':'Edição' }} de Marca
+</h2>
+<form (ngSubmit)="onSubmit()">
+    <mat-form-field>
+        <mat-label>Nome da Marca</mat-label>
+        <input matInput [(ngModel)]="entity.nome" name="nome" placeholder="Exemplo: Nestlé" required>
+    </mat-form-field>
+
+    <mat-form-field *ngIf="entity.id != null">
+        <mat-label>Cadastrado por</mat-label>
+            <input matInput [(ngModel)]="entity.usuario" name="usuario" disabled>
+    </mat-form-field>
+
+    <mat-form-field *ngIf="entity.id != null">
+        <mat-label>Cadastrado em</mat-label>
+        <input matInput [(ngModel)]="entity.createdAt" name="createdAt" disabled>
+    </mat-form-field>
+
+    <mat-form-field *ngIf="entity.id != null">
+        <mat-label>Atualizado em</mat-label>
+        <input matInput [(ngModel)]="entity.updatedAt" name="updatedAt" disabled>
+    </mat-form-field>
+
+    <div class="div-center">
+        <button mat-flat-button color="primary" type="submit">Salvar</button>
+        <button mat-flat-button color="warn" type="reset" routerLink="/marcas">Cancelar</button>
+    </div>
+</form>

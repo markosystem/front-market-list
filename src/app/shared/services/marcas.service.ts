@@ -1,39 +1,37 @@
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { Marca } from 'src/app/shared/models/marca.model';
+import { catchError, tap } from 'rxjs/operators';
+import { Marca } from '../models/marca.model';
 import { AbstractService } from './abstract.service';
-
 
 @Injectable({
   providedIn: 'root'
 })
-
 export class MarcasService extends AbstractService {
-
-  url = this.url_base + "marcas";
+  readonly url_complete = this.url.concat('marcas');
 
   constructor(private http: HttpClient) {
     super();
   }
 
-  add(marca): Observable<Marca> {
-    let options = {
-      headers: this.httpHeaders
-    };
-    return this.http.post<Marca>(this.url, marca, options);
+  all() {
+    return this.http.get(this.url_complete);
   }
 
-  update(marca): Observable<HttpResponse<Marca>> {
-    return this.http.post<Marca>(this.url, marca,
-      {
-        headers: this.httpHeaders,
-        observe: 'response'
-      }
-    );
+  get(id: string) {
+    return this.http.get(`${this.url_complete}/${id}`);
   }
 
-  getAllMarcas(): Observable<Marca[]> {
-    return this.http.get<Marca[]>(this.url);
+  save(marca: Marca) {
+    return this.http.post(this.url_complete, marca, this.httpOptions);
   }
+
+  update(marca: Marca) {
+    return this.http.put(`${this.url_complete}/${marca.id}`, marca, this.httpOptions);
+  }
+
+  delete(marca: Marca) {
+    return this.http.delete(`${this.url_complete}/${marca.id}`, this.httpOptions);
+  }
+
 }

@@ -4,6 +4,7 @@ import { FormMarcasComponent } from './components/form-marcas/form-marcas.compon
 import { ListaMarcasComponent } from './components/lista-marcas/lista-marcas.component';
 
 const routes: Routes = [
+  { path: 'marcas/form/:id', component: FormMarcasComponent },
   { path: 'marcas/form', component: FormMarcasComponent },
   { path: 'marcas', component: ListaMarcasComponent },
 ];
