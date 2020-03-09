@@ -1,8 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
+import { Component, OnInit, Inject } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
 import { Marca } from 'src/app/shared/models/marca.model';
 import { MarcasService } from 'src/app/shared/services/marcas.service';
+
+export interface DialogData {
+  marca: Marca;
+}
 
 @Component({
   selector: 'app-lista-marcas',
@@ -12,8 +17,8 @@ import { MarcasService } from 'src/app/shared/services/marcas.service';
 export class ListaMarcasComponent implements OnInit {
   displayedColumns: string[] = ['nome', 'usuario', 'id'];
   dataSource: MatTableDataSource<unknown>;
-
-  constructor(private marcaService: MarcasService, private _snackBar: MatSnackBar) { }
+  marcaSelected: Marca;
+  constructor(private marcaService: MarcasService, private _snackBar: MatSnackBar, public dialog: MatDialog) { }
 
   ngOnInit() {
     this.marcaService.all().subscribe(
@@ -21,7 +26,10 @@ export class ListaMarcasComponent implements OnInit {
         this.dataSource = new MatTableDataSource(req['data'])
       },
       error => {
-        console.log(`Ops, ocorreu um erro de ${error['name']}!`);
+        let msg = `Ops, ocorreu um erro de ${error['name']}!`;
+        console.log(error);
+        console.log(msg);
+        this.showMessage(msg);
       }
     );
   }
@@ -34,8 +42,8 @@ export class ListaMarcasComponent implements OnInit {
   remove(marca: Marca) {
     this.marcaService.delete(marca).subscribe(
       req => {
-        this.showMessage(req['message']);
         this.ngOnInit();
+        this.showMessage(req['message']);
       },
       error => {
         console.error(error);
@@ -47,6 +55,36 @@ export class ListaMarcasComponent implements OnInit {
     this._snackBar.open(message, 'Fechar', {
       duration: 4000,
     });
+  }
+
+  openDialogRemove(marca: Marca): void {
+    const dialogRef = this.dialog.open(DialogRemoveMarca, {
+      width: '250px',
+      data: { 
+        marca: marca 
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(marca => {
+      if (marca != undefined) {
+        this.remove(marca);
+        this.ngOnInit();
+      }
+    });
+  }
+}
+
+@Component({
+  selector: 'confirm-remocao',
+  templateUrl: 'remove-marca-modal-component.html',
+})
+export class DialogRemoveMarca {
+  constructor(
+    public dialogRef: MatDialogRef<DialogRemoveMarca>,
+    @Inject(MAT_DIALOG_DATA) public data: DialogData) { }
+
+  cancel(): void {
+    this.dialogRef.close();
   }
 }
 

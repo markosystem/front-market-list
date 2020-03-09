@@ -18,8 +18,7 @@ import { ModalDialogComponent, ShowDialogOverview } from './components/modal-dia
     CommonModule,
     MatButtonModule,
     MatDialogModule,
-    MatIconModule,
-    MatButtonModule,
+    MatIconModule
   ]
 })
 export class ModalDialogModule { }
