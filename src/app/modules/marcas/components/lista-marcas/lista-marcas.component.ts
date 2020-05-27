@@ -17,7 +17,6 @@ export interface DialogData {
 export class ListaMarcasComponent implements OnInit {
   displayedColumns: string[] = ['nome', 'usuario', 'id'];
   dataSource: MatTableDataSource<unknown>;
-  marcaSelected: Marca;
   constructor(private marcaService: MarcasService, private _snackBar: MatSnackBar, public dialog: MatDialog) { }
 
   ngOnInit() {
